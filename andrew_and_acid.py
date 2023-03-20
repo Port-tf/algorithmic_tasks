@@ -11,7 +11,7 @@ def count_operation(tanks: int, volumes: Tuple[int, ...]) -> int:
     for i in range(1, tanks):
         if volumes[i] < maximal:
             return -1
-        maximal: int = volumes[i]
+        maximal = volumes[i]
     return volumes[-1] - volumes[0]
 
 
