@@ -28,7 +28,7 @@ class MyQueueSized:
 
     @property
     def is_empty(self) -> bool:
-        '''Метод проверяет, что очереди нет элементов.'''
+        '''Метод проверяет, что в очереди нет элементов.'''
         return self.size == 0
 
     def push(self, item: int) -> Optional[str]:
