@@ -1,12 +1,13 @@
 '''Алгоритм определения правильности скобочной последовательности.'''
 
+
 class Stack:
     def __init__(self) -> None:
-        self.items = []
-        
+        self.items: list = []
+
     def push(self, item: str):
         self.items.append(item)
-    
+
     def pop(self):
         self.items.pop()
 
@@ -14,9 +15,10 @@ class Stack:
 def is_correct_bracket_seq(subsequence: str) -> bool:
     '''
     Функция перебирает принятую строку.
-    При нахождении открывающей скобки добавляет в стэк, при нахождении закрывающей,
-    проверяет в стэке последнюю скобку, являются ли они парой.
-    Если по окончании работы цикла с стэке не осталось скобок, вернет True.
+    При нахождении открывающей скобки добавляет в стэк,
+    при нахождении закрывающей, проверяет в стэке последнюю скобку,
+    являются ли они парой. Если по окончании работы цикла с стэке
+    не осталось скобок, вернет True.
     '''
     stack: Stack = Stack()
     for bracket in subsequence:
@@ -27,7 +29,7 @@ def is_correct_bracket_seq(subsequence: str) -> bool:
                 stack.items[-1] == '(' and bracket == ')' or
                 stack.items[-1] == '[' and bracket == ']' or
                 stack.items[-1] == '{' and bracket == '}'
-            ):    
+            ):
                 stack.pop()
             else:
                 return False
