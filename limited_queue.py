@@ -43,7 +43,7 @@ class MyQueueSized:
         if self.__size != self.__max_size:
             self.__items[self.__tail] = item
             self.__tail = (self.__tail + 1) % self.__max_size
-            self.__size += 1            
+            self.__size += 1
 
     def len_size(self) -> int:
         '''Метод возвращает количество элементов в очереди.'''
