@@ -7,8 +7,8 @@ from typing import Callable, Dict, Iterator, List, Optional
 class MyQueueSized:
     '''
     Класс организованной очереди.
-    self.head - начало очереди, self.tail - хвост очереди,
-    self.max_size - максимальное размер очереди, self.size -
+    self.__head - начало очереди, self.__tail - хвост очереди,
+    self.__max_size - максимальное размер очереди, self.__size -
     размер очереди в данный момент.
     '''
 
@@ -20,45 +20,51 @@ class MyQueueSized:
 
     def __init__(self, max_size: int) -> None:
         '''Конструктор класса.'''
-        self.items = [None] * max_size
-        self.max_size = max_size
-        self.head = 0
-        self.tail = 0
-        self.size = 0
+        self.__items = [None] * max_size
+        self.__max_size = max_size
+        self.__head = 0
+        self.__tail = 0
+        self.__size = 0
+
+    @property
+    def is_not_full(self):
+        '''Метод проверяет, что в очереди есть место'''
+        return self.__items[self.__tail] is None
 
     @property
     def is_empty(self) -> bool:
-        '''Метод проверяет, что в очереди нет элементов.'''
-        return self.size == 0
+        '''Метод проверяет, что очереди нет элементов.'''
+        return self.__size == 0
 
     def push(self, item: int) -> Optional[str]:
         '''Метод добавляет в очередь, в случае если в ней есть место.'''
-        if self.size != self.max_size:
-            self.items[self.tail] = item
-            self.tail = (self.tail + 1) % self.max_size
-            self.size += 1
-        return None
+        if not self.is_not_full:
+            return 'error'
+        if self.__size != self.__max_size:
+            self.__items[self.__tail] = item
+            self.__tail = (self.__tail + 1) % self.__max_size
+            self.__size += 1            
 
     def len_size(self) -> int:
         '''Метод возвращает количество элементов в очереди.'''
-        return self.size
+        return self.__size
 
-    def peek(self) -> Optional[int]:
+    def peek(self) -> Union[int, str]:
         '''Метод возращает значение первого элемента очереди.'''
         if self.is_empty:
-            return None
-        return self.items[self.head]
+            return 'None'
+        return self.__items[self.__head]
 
-    def pop(self) -> Optional[int]:
+    def pop(self) -> Union[int, str]:
         '''
         Метод удаляет из очереди первый элемент и возвращает его значение.
         '''
         if self.is_empty:
-            return None
-        head_pop = self.items[self.head]
-        self.items[self.head] = None
-        self.head = (self.head + 1) % self.max_size
-        self.size -= 1
+            return 'None'
+        head_pop = self.__items[self.__head]
+        self.__items[self.__head] = None
+        self.__head = (self.__head + 1) % self.__max_size
+        self.__size -= 1
         return head_pop
 
 
@@ -75,17 +81,15 @@ def working_with_a_queue(commands: Iterator[str], max_size_queue: int) -> None:
         'pop': queue.pop,
         'push': queue.push
     }
-    method: str
-    value: List[str]
     for command in commands:
+
+        method: str
+        value: List[str]
+
         method, *value = command.split()
-        if method == 'push':
-            if queue.items[queue.tail] is None:
-                methods[method](*value)
-            else:
-                print('error')
-        else:
-            print(methods[method]())
+        result = methods[method](*value)
+        if result or result == 0:
+            print(result)
 
 
 if __name__ == '__main__':
